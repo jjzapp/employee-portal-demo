@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+      <p>
+        Search:
+        <input ng-model="$ctrl.query" />
+      </p>
+
+      <p>
+        Sort by:
+        <select ng-model="$ctrl.orderProp">
+          <option value="id">By ID</option>
+          <option value="name">By Name</option>
+        </select>
+      </p>
+
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+      
+      <table class="table">
+        <tr>
+          <th>Name
+          </th>
+          <th>Id
+          </th>
+          <th>ManagerId
+          </th>
+        </tr>
+        <tr ng-repeat="employee in $ctrl.employees | filter:$ctrl.query | orderBy:$ctrl.orderProp">
+          <td>{{employee.name}}
+          </td>
+          <td>{{employee.id}}
+          </td>
+          <td>{{employee.managerId}}
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+    <!-- <pre>{{$ctrl.employees | filter:$ctrl.query | orderBy:$ctrl.orderProp | json}}</pre> -->
+  </div>
+</div>

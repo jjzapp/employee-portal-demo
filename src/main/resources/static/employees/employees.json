@@ -1,0 +1,32 @@
+[
+    {
+        "id": 100,
+        "name": "Alan",
+        "managerId": 150
+    },
+    {
+        "id": 150,
+        "name": "Jamie",
+        "managerId": 0
+    },
+    {
+        "id": 190,
+        "name": "David",
+        "managerId": 400
+    },
+    {
+        "id": 220,
+        "name": "Martin",
+        "managerId": 100
+    },
+    {
+        "id": 275,
+        "name": "Alex",
+        "managerId": 100
+    },
+    {
+        "id": 400,
+        "name": "Steve",
+        "managerId": 150
+    }
+]

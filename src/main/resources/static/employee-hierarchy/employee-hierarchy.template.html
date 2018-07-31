@@ -1,0 +1,26 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+    </div>
+    <div class="col-md-10">
+      <!--Body content-->
+      
+      <script type="text/ng-template" id="employeeTree">
+        {{ employee.name }}
+        <ul class="list-group" ng-if="employee.directReports">
+            <li class="list-group-item" ng-repeat="employee in employee.directReports" ng-include="'employeeTree'">
+            </li>
+        </ul>
+      </script>
+      <ul class="list-group" >
+          <li class="list-group-item" ng-repeat="employee in $ctrl.employeeTree" ng-include="'employeeTree'"></li>
+      </ul>
+
+    </div>
+
+    <!-- <pre>{{$ctrl.employees | json}}</pre> -->
+    <!-- <pre>{{$ctrl.employeeTree | json}}</pre> -->
+  </div>
+</div>
