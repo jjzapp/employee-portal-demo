@@ -8,7 +8,6 @@ angular.
     controller: ['Employee',
       function EmployeeHierarchyController(Employee) {
         this.employees = Employee.query();
-        this.orderProp = 'id';
         this.employeeTree = [];
 
         var self = this;
@@ -19,6 +18,7 @@ angular.
             var i = 0;
             for (;i<data.length; i++) {
               if (data[i].managerId == null || data[i].managerId === 0) {
+                data[i].managerId = 0;   // indicates CEO
                 self.employeeTree.push(data[i]);
               }
 
@@ -29,9 +29,20 @@ angular.
                   continue;
                 }
 
-                if (data[j].managerId === data[i].id)
-                  data[i].directReports.push(data[j]);
+                if (data[j].managerId === data[i].id) {
+                  data[j].manager = data[i];
+                  data[i].directReports.push(data[j]);                  
+                }
               }
+            }
+            // Hierarchy array should contain CEO and their reports
+            // Search for any employees with no/invalid manager, and append to Hierarchy array
+            var invalidManagerEmployees = data.filter(function(employee) {
+              return employee.managerId !==0 && employee.manager === undefined;
+            });
+            if (invalidManagerEmployees.length > 0) {
+              var invalidManager = {id: 0, name: "(Unknown Manager)", managerId: 0, directReports: invalidManagerEmployees};
+              self.employeeTree.push(invalidManager);
             }
         });
       }

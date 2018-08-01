@@ -15,12 +15,16 @@ describe('employeeHierarchy', function() {
     beforeEach(inject(function($componentController, _$httpBackend_) {
       $httpBackend = _$httpBackend_;
       $httpBackend.expectGET('api/employees')
-                  .respond([{"id": 100,"name": "Alan","managerId": 150},{"id": 150,"name": "Jamie","managerId": 0}]);
+                  .respond([
+                    {"id": 100,"name": "Alan","managerId": 150},
+                    {"id": 150,"name": "Jamie","managerId": 0},   // CEO
+                    {"id": 500,"name": "Frodo","managerId": 200}  // Invalid managerId
+                  ]);
 
       ctrl = $componentController('employeeHierarchy');
     }));
 
-    it('should create a `employeeTree` property with employees Jamie fetched with `$http`', function() {
+    it('should create a `employeeTree` property with employee[0].name==`Jamie` fetched with `$http`', function() {
       jasmine.addCustomEqualityTester(angular.equals);
 
       expect(ctrl.employees).toEqual([]);
@@ -29,8 +33,13 @@ describe('employeeHierarchy', function() {
       expect(ctrl.employeeTree[0].name).toEqual("Jamie");
     });
 
-    it('should set a default value for the `orderProp` property', function() {
-      expect(ctrl.orderProp).toBe('id');
+    it('should create a `employeeTree` property with employee[1].name==`(No Manager)` fetched with `$http`', function() {
+      jasmine.addCustomEqualityTester(angular.equals);
+
+      expect(ctrl.employees).toEqual([]);
+
+      $httpBackend.flush();
+      expect(ctrl.employeeTree[1].name).toEqual("(Unknown Manager)");
     });
 
   });

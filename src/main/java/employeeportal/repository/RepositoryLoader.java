@@ -26,5 +26,7 @@ public class RepositoryLoader implements CommandLineRunner {
 		employeeRepository.save(new Employee(275L, "Alex", 100L));
 		employeeRepository.save(new Employee(400L, "Steve", 150L));
 		employeeRepository.save(new Employee(190L, "David", 400L));
+		employeeRepository.save(new Employee(450L, "Bilbo", 275L));
+		employeeRepository.save(new Employee(500L, "Frodo", 200L));		// Invalid ManagerId
 	}
 }

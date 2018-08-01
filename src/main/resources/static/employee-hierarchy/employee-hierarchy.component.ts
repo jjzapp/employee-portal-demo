@@ -6,12 +6,14 @@ export class EmployeeHierarchyNode {
   public name: string;
   public managerId: number;
   public directReports: Array<EmployeeHierarchyNode>;
+  public manager?: EmployeeHierarchyNode;
 
   constructor(id: number, name: string, managerId: number) {
     this.id = id;
     this.name = name;
     this.managerId = managerId;
     this.directReports = new Array<EmployeeHierarchyNode>();
+    this.manager = undefined;
   }
 }
 
@@ -44,6 +46,7 @@ export class EmployeeHierarchyController implements IEmployeeHierarchyController
       // For each of the employees, record the direct reports
       for (let i=0;i<employeNodes.length; i++) {
         if (employeNodes[i].managerId == null || employeNodes[i].managerId === 0) {
+          employeNodes[i].managerId = 0;   // indicates CEO
           self.employeeTree.push(employeNodes[i]);
         }
 
@@ -54,9 +57,18 @@ export class EmployeeHierarchyController implements IEmployeeHierarchyController
           }
 
           if (employeNodes[j].managerId === employeNodes[i].id) {
+            employeNodes[j].manager = employeNodes[i];
             employeNodes[i].directReports.push(employeNodes[j]);
           }
         }
+      }
+      // Hierarchy array should contain CEO and their reports
+      // Search for any employees with no/invalid manager, and append to Hierarchy array
+      const invalidManagerEmployees = employeNodes.filter(employee => employee.managerId !==0 && employee.manager === undefined);
+      if (invalidManagerEmployees.length > 0) {
+        let invalidManager = new EmployeeHierarchyNode(0, "(Unknown Manager)", 0);
+        invalidManager.directReports = invalidManagerEmployees;
+        self.employeeTree.push(invalidManager);
       }
     });
   }
